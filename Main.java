@@ -77,7 +77,7 @@ public class Main
         String[] moralnosci = kontener.getMoralnosci();
         String[] personalnosci = kontener.getPersonalnosci();
         for (int i = 0; i < moralnosci.length; i++) {
-            for (int j = 0; j < personalnosci.length; i++) {
+            for (int j = 0; j < personalnosci.length; j++) {
                 dataBase.dodajCharakter(moralnosci[i], personalnosci[j]);
             }
         }
