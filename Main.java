@@ -18,6 +18,8 @@ public class Main
         Kontener kontener = new Kontener();
         Random random = new Random();
 
+        dataBase.connect();
+
         // ATUT
         String[] atuty = kontener.getAtuty();
         for (int i = 0; i < atuty.length; i++) {
@@ -87,7 +89,7 @@ public class Main
         gi.wypelnij();
         Postac postac;
         for (int i = 0; i < 800; i++) {
-            postac = new Postac(gi.stworzImie(), moralnosci.length, rasy.length, klasy.length, 300);
+            postac = new Postac(gi.stworzImie(), (moralnosci.length*personalnosci.length), rasy.length, klasy.length, 300);
             dataBase.dodajPostac(postac);
         }
 
