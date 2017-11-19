@@ -2,7 +2,7 @@ CREATE SCHEMA `generator_postaci_rpg1`;
 
 CREATE TABLE `generator_postaci_rpg1`.`atut` (
   `ID_AT` int(11) NOT NULL AUTO_INCREMENT,
-  `Nazwa_AT` varchar(30) NOT NULL,
+  `Nazwa_AT` varchar(60) NOT NULL,
   `Wymagany_poziom_AT` int(11) UNSIGNED NOT NULL,
   `Opis_AT` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID_AT`)
