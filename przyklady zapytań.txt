@@ -1,0 +1,27 @@
+Zapytania do bazy:
+
+1. Znajdź wszytkie postaci o klasie "xxxxx";
+2. Wypisz wszystkie atuty które posiada postać o imieniu "xxxxx" i klasie "xxxxxx";
+3. Zlicz całą wartość majątku w ekwipunku postaci
+4. Ilość postaci danej rasy
+5. Zlicz ile jest pierwszopoziomowych czarów;
+6. Posortuj postaci względem poziomu i wybierz 10 postaci o najwyższym poziomie (LIMIT);
+7. Wypisz wszystkie atuty i umiejętności postaci sortując po wymaganym poziomie;
+8. Wskaż najdroższą i najtańszą rzecz w ekwipunku postaci;
+9. Pokaż cały magiczny ekwipunek który daje bonus w granicy 4-5;
+10. Pokaż które postaci wybrały atut "xxxxxxx"; 
+11. Pokaż które umiejętności może wybrać dana klasa;
+
+
+
+1. 
+SELECT * FROM postać
+	INNER JOIN klasa ON postać.ID_KL = klasa.ID_KL
+		WHERE Nazwa_KL = 'wojownik'
+		
+2.
+SELECT * FROM atuty
+	INNER JOIN atuty_postaci ON atuty.ID_AT = atuty_postaci.ID_AT
+	INNER JOIN postać ON atuty_postaci.ID_P = postać.ID_P
+
+3.	
