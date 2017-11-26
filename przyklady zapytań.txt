@@ -24,4 +24,24 @@ SELECT * FROM atuty
 	INNER JOIN atuty_postaci ON atuty.ID_AT = atuty_postaci.ID_AT
 	INNER JOIN postać ON atuty_postaci.ID_P = postać.ID_P
 
-3.	
+3.
+SELECT SUM(Wartosc_MJ) FROM majątek
+	INNER JOIN majątek_w_inwentarzu ON majątek.ID_MJ = majątek_w_inwentarzu.ID_MJ
+	INNER JOIN inwentarz ON majątek_w_inwentarzu.ID_I = inwentarz.ID_I
+	INNER JOIN postać ON inwentarz.ID_I = postać.ID_I
+	
+4.
+SELECT COUNT(ID_P) FROM postać
+	INNER JOIN rasa ON postać.ID_RS = rasa.ID_R
+	
+5.
+SELECT COUNT(ID_CZ) FROM czary
+	WHERE ranga_CZ = 1
+	
+6. 
+SELECT * FROM postać
+	ORDER BY poziom_P DESC
+	LIMIT 10
+
+
+	
