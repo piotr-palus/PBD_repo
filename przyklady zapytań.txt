@@ -14,34 +14,84 @@ Zapytania do bazy:
 
 
 
-1. 
-SELECT * FROM postać
-	INNER JOIN klasa ON postać.ID_KL = klasa.ID_KL
-		WHERE Nazwa_KL = 'wojownik'
+-- 1. Znajdź wszytkie postaci o klasie "xxxxx";
+SELECT * FROM generator_postaci_rpg1.postać
+	INNER JOIN generator_postaci_rpg1.klasa ON generator_postaci_rpg1.postać.ID_KL = generator_postaci_rpg1.klasa.ID_KL
+		WHERE Nazwa_KL = 'wojownik';
 		
-2.
-SELECT * FROM atuty
-	INNER JOIN atuty_postaci ON atuty.ID_AT = atuty_postaci.ID_AT
-	INNER JOIN postać ON atuty_postaci.ID_P = postać.ID_P
+        
+-- 2. Wypisz wszystkie atuty które posiada postać o imieniu "xxxxx" i klasie "xxxxxx";
+SELECT Nazwa_AT FROM generator_postaci_rpg1.atut
+	INNER JOIN generator_postaci_rpg1.atuty_postaci ON generator_postaci_rpg1.atut.ID_AT = generator_postaci_rpg1.atuty_postaci.ID_AT
+	INNER JOIN generator_postaci_rpg1.postać ON generator_postaci_rpg1.atuty_postaci.ID_P = generator_postaci_rpg1.postać.ID_P
+    INNER JOIN generator_postaci_rpg1.klasa ON generator_postaci_rpg1.postać.ID_KL = generator_postaci_rpg1.klasa.ID_KL
+    WHERE generator_postaci_rpg1.klasa.Nazwa_KL = "barbarzyńca" AND generator_postaci_rpg1.postać.Imie_P="Pillaposege";
 
-3.
-SELECT SUM(Wartosc_MJ) FROM majątek
-	INNER JOIN majątek_w_inwentarzu ON majątek.ID_MJ = majątek_w_inwentarzu.ID_MJ
-	INNER JOIN inwentarz ON majątek_w_inwentarzu.ID_I = inwentarz.ID_I
-	INNER JOIN postać ON inwentarz.ID_I = postać.ID_I
+
+-- 3. Zlicz całą wartość majątku w ekwipunku postaci
+SELECT SUM(Wartość_MJ) FROM generator_postaci_rpg1.majatek
+	INNER JOIN generator_postaci_rpg1.majątek_w_inwentarzu ON generator_postaci_rpg1.majatek.ID_MJ = generator_postaci_rpg1.majątek_w_inwentarzu.ID_MJ
+	INNER JOIN generator_postaci_rpg1.inwentarz ON generator_postaci_rpg1.majątek_w_inwentarzu.ID_I = generator_postaci_rpg1.inwentarz.ID_I
+	INNER JOIN generator_postaci_rpg1.postać ON generator_postaci_rpg1.inwentarz.ID_I = generator_postaci_rpg1.postać.ID_I;
 	
-4.
-SELECT COUNT(ID_P) FROM postać
-	INNER JOIN rasa ON postać.ID_RS = rasa.ID_R
+
+-- 4. Ilość postaci danej rasy
+SELECT generator_postaci_rpg1.rasa.Nazwa_RS AS Rasa, COUNT(generator_postaci_rpg1.postać.ID_P) AS Liczność
+	FROM generator_postaci_rpg1.rasa LEFT JOIN generator_postaci_rpg1.postać ON generator_postaci_rpg1.postać.ID_RS = generator_postaci_rpg1.rasa.ID_RS
+    GROUP BY generator_postaci_rpg1.rasa.Nazwa_RS;
+    
+
+-- 5. Zlicz ile jest pierwszopoziomowych czarów;
+SELECT COUNT(ID_CZ) FROM generator_postaci_rpg1.czar
+	WHERE ranga_CZ = 1;
 	
-5.
-SELECT COUNT(ID_CZ) FROM czary
-	WHERE ranga_CZ = 1
-	
-6. 
-SELECT * FROM postać
+    
+-- 6. Posortuj postaci względem poziomu i wybierz 10 postaci o najwyższym poziomie (LIMIT);
+SELECT * FROM generator_postaci_rpg1.postać
 	ORDER BY poziom_P DESC
-	LIMIT 10
+	LIMIT 10;
+   
+   
+ -- 7. Wypisz wszystkie atuty i umiejętności postaci sortując po wymaganym poziomie;
+SELECT generator_postaci_rpg1.postać.Imie_P, generator_postaci_rpg1.atut.Nazwa_AT, generator_postaci_rpg1.umiejętność.Nazwa_U
+	FROM generator_postaci_rpg1.postać 
+    INNER JOIN generator_postaci_rpg1.atuty_postaci ON generator_postaci_rpg1.postać.ID_P = generator_postaci_rpg1.atuty_postaci.ID_P
+    INNER JOIN generator_postaci_rpg1.atut ON generator_postaci_rpg1.atuty_postaci.ID_AT = generator_postaci_rpg1.atut.ID_AT
+    INNER JOIN generator_postaci_rpg1.umiejętności_postaci ON generator_postaci_rpg1.postać.ID_P = generator_postaci_rpg1.umiejętności_postaci.ID_P
+    INNER JOIN generator_postaci_rpg1.umiejętność ON generator_postaci_rpg1.umiejętność.ID_U = generator_postaci_rpg1.umiejętności_postaci.ID_U
+	ORDER BY generator_postaci_rpg1.postać.Imie_P
+    ;
 
+
+-- 8. Wskaż najdroższą i najtańszą rzecz w ekwipunku postaci; 
+SELECT generator_postaci_rpg1.postać.Imie_P AS Imie, MAX(generator_postaci_rpg1.majatek.Nazwa_MJ) AS najdroższa_rzecz , MIN(generator_postaci_rpg1.majatek.Nazwa_MJ) AS najtańsza_rzecz 
+	FROM generator_postaci_rpg1.majatek
+    INNER JOIN generator_postaci_rpg1.majątek_w_inwentarzu ON generator_postaci_rpg1.majątek_w_inwentarzu.ID_MJ = generator_postaci_rpg1.majatek.ID_MJ
+    INNER JOIN generator_postaci_rpg1.inwentarz ON generator_postaci_rpg1.inwentarz.ID_I = generator_postaci_rpg1.majątek_w_inwentarzu.ID_I
+    INNER JOIN generator_postaci_rpg1.postać ON generator_postaci_rpg1.postać.ID_I = generator_postaci_rpg1.majątek_w_inwentarzu.ID_I
+    GROUP BY generator_postaci_rpg1.postać.Imie_P
+	ORDER BY generator_postaci_rpg1.postać.Imie_P
+;
+
+
+-- 9. Pokaż cały magiczny ekwipunek który daje bonus w granicy 4-5;
+SELECT * FROM generator_postaci_rpg1.magiczny_ekwipunek
+	WHERE generator_postaci_rpg1.magiczny_ekwipunek.Bonus_Budowa_ME > 3 OR generator_postaci_rpg1.magiczny_ekwipunek.Bonus_Charyzma_ME > 3
+		OR generator_postaci_rpg1.magiczny_ekwipunek.Bonus_Inteligencja_ME > 3 OR generator_postaci_rpg1.magiczny_ekwipunek.Bonus_Mana_ME > 3
+		OR generator_postaci_rpg1.magiczny_ekwipunek.Bonus_Roztropność_ME > 3 OR generator_postaci_rpg1.magiczny_ekwipunek.Bonus_Siła_ME > 3
+		OR generator_postaci_rpg1.magiczny_ekwipunek.Bonus_Zręczność_ME > 3 OR generator_postaci_rpg1.magiczny_ekwipunek.Bonus_Życia_ME > 3
+		ORDER BY generator_postaci_rpg1.magiczny_ekwipunek.Nazwa_ME
+    ;
+
+
+-- 10. Pokaż które postaci wybrały atut "xxxxxxx"; 
+SELECT generator_postaci_rpg1.postać.Imie_P FROM generator_postaci_rpg1.postać
+	INNER JOIN generator_postaci_rpg1.atuty_postaci ON generator_postaci_rpg1.atuty_postaci.ID_P = generator_postaci_rpg1.postać.ID_P
+    INNER JOIN generator_postaci_rpg1.atut ON generator_postaci_rpg1.atut.ID_AT = generator_postaci_rpg1.atuty_postaci.ID_AT
+    WHERE generator_postaci_rpg1.atut.Nazwa_AT = "Odbijanie strzał"
+    ORDER BY generator_postaci_rpg1.postać.Imie_P
+;
+
+-- 11. Pokaż które umiejętności może wybrać dana klasa;
 
 	
