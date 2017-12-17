@@ -312,6 +312,8 @@ CREATE TABLE `generator_postaci_rpg1`.`historia_postaci` (
   `Budowa_H` int(11) UNSIGNED NOT NULL,
   `Charyzma_H` int(11) UNSIGNED NOT NULL,
   `Zycie_H` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`ID_P`),
-  CONSTRAINT `ID_P_H` FOREIGN KEY (`ID_P`) REFERENCES `postać` (`ID_P`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`ID_P`,`Poziom_H`),
+  KEY `Poziom_H_idx` (`Poziom_H`),
+  CONSTRAINT `ID_P_H` FOREIGN KEY (`ID_P`) REFERENCES `postać` (`ID_P`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Poziom_H` FOREIGN KEY (`Poziom_H`) REFERENCES `postać` (`Poziom_P`) ON DELETE CASCADE ON UPDATE CASCADE
 );
