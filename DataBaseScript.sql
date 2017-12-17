@@ -302,6 +302,9 @@ CREATE TABLE `generator_postaci_rpg1`.`magiczny_ekwipunek_w_inwentarzu` (
   CONSTRAINT `ID_ME_I` FOREIGN KEY (`ID_ME`) REFERENCES `magiczny_ekwipunek` (`ID_ME`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+ALTER TABLE `generator_postaci_rpg1`.`postać` 
+ADD INDEX `Poziom_P` (`Poziom_P` ASC);
+
 CREATE TABLE `generator_postaci_rpg1`.`historia_postaci` (
   `ID_P` int(11) NOT NULL,
   `Poziom_H` int(11) UNSIGNED NOT NULL,
