@@ -223,6 +223,9 @@ CREATE TABLE `generator_postaci_rpg1`.`umiejętności_postaci` (
   CONSTRAINT `ID_U_P` FOREIGN KEY (`ID_U`) REFERENCES `umiejętność` (`ID_U`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+ALTER TABLE `generator_postaci_rpg1`.`umiejętności_postaci`
+ADD Poziom_nabycia_U int(11) UNSIGNED NOT NULL;
+
 CREATE TABLE `generator_postaci_rpg1`.`umiejętności_klasy` (
   `ID_U` int(11) NOT NULL,
   `ID_KL` int(11) NOT NULL,
@@ -250,6 +253,9 @@ CREATE TABLE `generator_postaci_rpg1`.`atuty_postaci` (
   CONSTRAINT `ID_AT_P` FOREIGN KEY (`ID_AT`) REFERENCES `atut` (`ID_AT`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ID_P_AT` FOREIGN KEY (`ID_P`) REFERENCES `postać` (`ID_P`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+ALTER TABLE `generator_postaci_rpg1`.`atuty_postaci`
+ADD Poziom_nabycia_AT int(11) UNSIGNED NOT NULL;
 
 CREATE TABLE `generator_postaci_rpg1`.`czary_klasy` (
   `ID_KL` int(11) NOT NULL,
@@ -294,4 +300,18 @@ CREATE TABLE `generator_postaci_rpg1`.`magiczny_ekwipunek_w_inwentarzu` (
   KEY `ID_ME_I_idx` (`ID_ME`),
   CONSTRAINT `ID_I_ME` FOREIGN KEY (`ID_I`) REFERENCES `inwentarz` (`ID_I`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ID_ME_I` FOREIGN KEY (`ID_ME`) REFERENCES `magiczny_ekwipunek` (`ID_ME`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `generator_postaci_rpg1`.`historia_postaci` (
+  `ID_P` int(11) NOT NULL,
+  `Poziom_H` int(11) UNSIGNED NOT NULL,
+  `Sila_H` int(11) UNSIGNED NOT NULL,
+  `Zrecznosc_H` int(11) UNSIGNED NOT NULL,
+  `Roztropnosc_H` int(11) UNSIGNED NOT NULL,
+  `Inteligencja_H` int(11) UNSIGNED NOT NULL,
+  `Budowa_H` int(11) UNSIGNED NOT NULL,
+  `Charyzma_H` int(11) UNSIGNED NOT NULL,
+  `Zycie_H` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`ID_P`),
+  CONSTRAINT `ID_P_H` FOREIGN KEY (`ID_P`) REFERENCES `postać` (`ID_P`) ON DELETE CASCADE ON UPDATE CASCADE
 );
